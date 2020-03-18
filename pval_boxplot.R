@@ -84,6 +84,14 @@ scale_x_discrete(labels=c("51" = "-50 -40",
                           "141" = "+40 +50"))
 dev.off()
 
+factorss <- sort(as.numeric(as.character(unique(databox$pos))))
+pvals <- data.frame(pos=NULL,pval=NULL)
+for(i in factorss) {
+  tmp_box <- databox[databox$pos == i,]
+  pval <- wilcox.test(pval~Matrix,data=tmp_box)$p.value
+  pvals<-rbind(pvals,c(i,pval))
+}
+colnames(pvals) <- c("pos","pval")
 ############################################################################################################################
 ############################################################################################################################
 ############################################################################################################################
