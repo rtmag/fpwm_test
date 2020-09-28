@@ -136,5 +136,5 @@ fileConn <- file("jund_walt.transfac")
 		transfac_vector <- c( transfac_vector, paste0("CC numberOfSites: ",jund_walt[1,1][[1]]@MethMotif_x@MMmotif@nsites)  )
 		transfac_vector <- c( transfac_vector, c("XX","//")  )
 
-
-                                                  
+    writeLines(transfac_vector, fileConn)
+    close(fileConn)
