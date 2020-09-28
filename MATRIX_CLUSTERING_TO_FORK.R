@@ -86,3 +86,55 @@ JUND_FOSL2_HepG2_peaks <-JUND_FOSL2_HepG2[,1][[1]]@common_peak # 3160
 write.table(JUND_FOSL2_HepG2_peaks[,1:3],"JUND_FOSL2_HepG2_3160peaks.bed",sep="\t",quote=F,row.names=F,col.names=F)
 
 
+
+
+
+K562_CEBPB_transfac <- searchMotif(id = "MM1_HSA_K562_CEBPB", motif_format = "TRANSFAC")
+
+K562_CEBPB_transfac@MMmotif@motif_matrix <- apply(K562_CEBPB_transfac@MMmotif@motif_matrix,2,function(x) x/sum(x))
+
+exportMMPFM(fun_output = K562_CEBPB_transfac, fun = "searchMotif",
+                 save_motif_PFM = TRUE, save_betaScore_matrix = FALSE)
+                                                  
+                                                  
+jund_walt <- intersectPeakMatrix(peak_id_x = "MM1_HSA_HepG2_JUND",
+                                              peak_id_y = c("MM1_HSA_HepG2_ATF2","MM1_HSA_HepG2_FOSL2"),
+                                              motif_only_for_id_y = TRUE, 
+                                              methylation_profile_in_narrow_region = TRUE)
+                                                  
+                                                  
+
+                                                  
+exportMMPFM(fun_output = jund_walt, 
+            fun = "intersectPeakMatrix", 
+            save_motif_PFM = TRUE, 
+            save_betaScore_matrix = FALSE)
+                                                  
+                                                  
+jund_walt <- intersectPeakMatrix(peak_id_x = "MM1_HSA_HepG2_JUND",
+                                              peak_id_y = c("MM1_HSA_HepG2_ATF2","MM1_HSA_HepG2_FOSL2"),
+                                              motif_only_for_id_y = TRUE, 
+                                              methylation_profile_in_narrow_region = TRUE)
+                                                  
+fileConn <- file("jund_walt.transfac")
+
+		transfac_vector <- c()
+		transfac_vector <- c( transfac_vector, paste0("AC ",jund_walt[1,1][[1]]@id) )
+		transfac_vector <- c( transfac_vector, "XX" )
+		transfac_vector <- c( transfac_vector, paste0("ID ",jund_walt[1,1][[1]]@id), "XX" )
+		transfac_vector <- c( transfac_vector, paste0("DE ")  )
+		transfac_vector <- c( transfac_vector, paste("PO","A","C","G","T",sep="\t")  )
+    
+    # probability to counts:
+    matrix <- jund_walt[1,1][[1]]@MethMotif_x@MMmotif@motif_matrix * jund_walt[1,1][[1]]@MethMotif_x@MMmotif@nsites   
+                                                  
+    for ( jx in 1:dim(matrix)[1] ){
+				transfac_vector <- c( transfac_vector, paste(matrix[jx,],collapse="\t") )
+			}
+                                                  
+		transfac_vector <- c( transfac_vector, c("XX","CC program: FPWM")  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfSites: ",jund_walt[1,1][[1]]@MethMotif_x@MMmotif@nsites)  )
+		transfac_vector <- c( transfac_vector, c("XX","//")  )
+
+
+                                                  
