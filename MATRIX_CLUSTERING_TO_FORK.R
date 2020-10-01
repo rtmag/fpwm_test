@@ -225,5 +225,68 @@ fileConn <- file("K562_CEBPB_AND_ATF4_CEBPD.transfac")
     close(fileConn)
 						  
 						  
+##############################################################################################################################################################################
+##############################################################################################################################################################################
+##############################################################################################################################################################################
 
+cebpb_inter <- intersectPeakMatrix(peak_id_x = "MM1_HSA_HepG2_JUND",
+                                              peak_id_y = c("MM1_HSA_K562_CEBPB","MM1_HSA_HepG2_ATF2","MM1_HSA_HepG2_FOSL2"),
+                                              motif_only_for_id_y = TRUE,
+                                              methylation_profile_in_narrow_region = TRUE)
 						  
+fileConn <- file("HepG2_JUND_AND_ATF2_FOSL2.transfac")
+		transfac_vector <- c()
+		transfac_vector <- c( transfac_vector, paste0("AC ",cebpb_inter[1,1][[1]]@id) )
+		transfac_vector <- c( transfac_vector, "XX" )
+		transfac_vector <- c( transfac_vector, paste0("ID ",cebpb_inter[1,1][[1]]@id), "XX" )
+		transfac_vector <- c( transfac_vector, paste0("DE ")  )
+		transfac_vector <- c( transfac_vector, paste("PO","A","C","G","T",sep="\t")  )
+                                         
+    matrix <- cebpb_inter[1,1][[1]]@MethMotif_x@MMmotif@motif_matrix * cebpb_inter[1,1][[1]]@MethMotif_x@MMmotif@nsites   
+
+    for ( jx in 1:dim(matrix)[1] ){
+				transfac_vector <- c( transfac_vector, paste(matrix[jx,],collapse="\t") )
+			}
+						  
+		transfac_vector <- c( transfac_vector, c("XX","CC program: forkedTF")  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfSites: ",cebpb_inter[1,1][[1]]@MethMotif_x@MMmotif@nsites)  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfPeaks: ",cebpb_inter[1,1][[1]]@MethMotif_x@MMmotif@nPeaks)  )
+		transfac_vector <- c( transfac_vector, c("XX","//")  )
+################						  
+		transfac_vector <- c( transfac_vector, paste0("AC ",cebpb_inter[1,2][[1]]@id) )
+		transfac_vector <- c( transfac_vector, "XX" )
+		transfac_vector <- c( transfac_vector, paste0("ID ",cebpb_inter[1,2][[1]]@id), "XX" )
+		transfac_vector <- c( transfac_vector, paste0("DE ")  )
+		transfac_vector <- c( transfac_vector, paste("PO","A","C","G","T",sep="\t")  )
+                                         
+    matrix <- cebpb_inter[1,2][[1]]@MethMotif_x@MMmotif@motif_matrix * cebpb_inter[1,2][[1]]@MethMotif_x@MMmotif@nsites   
+
+    for ( jx in 1:dim(matrix)[1] ){
+				transfac_vector <- c( transfac_vector, paste(matrix[jx,],collapse="\t") )
+			}
+						  
+		transfac_vector <- c( transfac_vector, c("XX","CC program: forkedTF")  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfSites: ",cebpb_inter[1,2][[1]]@MethMotif_x@MMmotif@nsites)  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfPeaks: ",cebpb_inter[1,2][[1]]@MethMotif_x@MMmotif@nPeaks)  )
+		transfac_vector <- c( transfac_vector, c("XX","//")  )
+################
+		transfac_vector <- c( transfac_vector, paste0("AC ",cebpb_inter[1,3][[1]]@id) )
+		transfac_vector <- c( transfac_vector, "XX" )
+		transfac_vector <- c( transfac_vector, paste0("ID ",cebpb_inter[1,3][[1]]@id), "XX" )
+		transfac_vector <- c( transfac_vector, paste0("DE ")  )
+		transfac_vector <- c( transfac_vector, paste("PO","A","C","G","T",sep="\t")  )
+                                         
+    matrix <- cebpb_inter[1,3][[1]]@MethMotif_x@MMmotif@motif_matrix * cebpb_inter[1,3][[1]]@MethMotif_x@MMmotif@nsites   
+
+    for ( jx in 1:dim(matrix)[1] ){
+				transfac_vector <- c( transfac_vector, paste(matrix[jx,],collapse="\t") )
+			}
+						  
+		transfac_vector <- c( transfac_vector, c("XX","CC program: forkedTF")  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfSites: ",cebpb_inter[1,3][[1]]@MethMotif_x@MMmotif@nsites)  )
+		transfac_vector <- c( transfac_vector, paste0("CC numberOfPeaks: ",cebpb_inter[1,3][[1]]@MethMotif_x@MMmotif@nPeaks)  )
+		transfac_vector <- c( transfac_vector, c("XX","//")  )						  
+						  
+						  
+    writeLines(transfac_vector, fileConn)
+    close(fileConn)
