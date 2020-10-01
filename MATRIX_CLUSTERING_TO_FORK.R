@@ -230,7 +230,7 @@ fileConn <- file("K562_CEBPB_AND_ATF4_CEBPD.transfac")
 ##############################################################################################################################################################################
 
 cebpb_inter <- intersectPeakMatrix(peak_id_x = "MM1_HSA_HepG2_JUND",
-                                              peak_id_y = c("MM1_HSA_K562_CEBPB","MM1_HSA_HepG2_ATF2","MM1_HSA_HepG2_FOSL2"),
+                                              peak_id_y = c("MM1_HSA_HepG2_JUND","MM1_HSA_HepG2_ATF2","MM1_HSA_HepG2_FOSL2"),
                                               motif_only_for_id_y = TRUE,
                                               methylation_profile_in_narrow_region = TRUE)
 						  
