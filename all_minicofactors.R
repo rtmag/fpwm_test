@@ -11,3 +11,13 @@ for( i in 556:dim(mm_table)[1] ){
   miniCofactorReport( TF = mm_table$TF[i], cell = mm_table$cell_tissue_name[i],cobinding_threshold=.1 )
 }
 
+
+
+###  TEST CASES
+# HepG2 USF2 cofactor: TFE3
+
+# HepG2 USF1 cofactor: TFE3
+
+# HCT116 ELF1 cofactor: FOSL1
+
+# A549 SREBF1 cofactor: JUNB
