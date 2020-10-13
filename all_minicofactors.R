@@ -132,21 +132,22 @@ pval_in_bins <- function(ft_file, pssm_name, pval_thr = 0.001){
   # Create center pos
   ft_filt <- ft_filt %>%
     dplyr::mutate( pos = (start + end)/2 )
+	
+	ft_filt$pos <- ft_filt$pos+100
   
   # Creat bins and add name
   ft_filt <- ft_filt %>%
     dplyr::mutate( 
       binMap = pos %>%
         cut(
-          breaks = seq(50,150, by = 10),
+          breaks = seq(1,101, by = 10),
           labels = seq(51,150, by = 10)
           ),
       matrix_name = pssm_name,
     )
   
   # Filter out NA values
-  ft_filt <- ft_filt %>% 
-    dplyr::filter( !(is.na( binMap )  ) )
+	return(ft_filt)
 
 }
 
@@ -154,10 +155,10 @@ pval_in_bins <- function(ft_file, pssm_name, pval_thr = 0.001){
 
 # Load feature file 1
 pssm1_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF1_AND_TFE3.ft", 
-                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_USF1")
+                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_USF1",pval_thr=.0001)
 # Load feature file 2
 pssm2_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF1_AND_TFE3.ft", 
-                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_TFE3")
+                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_TFE3",pval_thr=.0001)
 
 pssm1_df <- pssm1_df %>% mutate( matrix_name = "USF1"  )
 pssm2_df <- pssm2_df %>% mutate( matrix_name = "USF1+TFE3" )
