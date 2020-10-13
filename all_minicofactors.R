@@ -87,10 +87,10 @@ matrixScan_data_gen(main="MM1_HSA_HCT116_ELF1",cofact="MM1_HSA_HCT116_FOSL1")
 # A549 SREBF1 cofactor: JUNB
 matrixScan_data_gen(main="MM1_HSA_A549_SREBF1",cofact="MM1_HSA_A549_JUNB")
 
-######################################################################################################################################################################################
-######################################################################################################################################################################################
-######################################################################################################################################################################################
-######################################################################################################################################################################################
+##################################################################################################################################################################################
+##################################################################################################################################################################################
+##################################################################################################################################################################################
+##################################################################################################################################################################################
 # Bin TFBS p-values
 pval_in_bins <- function(ft_file, pssm_name, pval_thr = 0.001){
   # Create grep cmd
@@ -151,42 +151,74 @@ pval_in_bins <- function(ft_file, pssm_name, pval_thr = 0.001){
 
 }
 
-##
+##############################################################################################################################################################################
+plotMS <- function(df1,df2,mat1,mat2){
+	pssm1_df <- df1 %>% mutate( matrix_name = mat1  )
+	pssm2_df <- df2 %>% mutate( matrix_name = mat2 )
 
+	databox2 <- rbind(pssm1_df,pssm2_df) %>% 
+	  mutate( matrix_name =  matrix_name %>% as.factor() )
+
+	p2 <- databox2 %>% 
+	  ggplot(aes(x = binMap, y = pval, fill = matrix_name)) + 
+	  geom_boxplot(outlier.shape = NA) + 
+	  xlab("JUND and FOSL2 overlapping peaks bins") + 
+	  ylab("-Log10 Pvalues") + 
+	  labs(fill='Motifs') +
+	  scale_x_discrete(
+	    labels=c(
+	      "51" = "-50 -40",
+	      "61" = "-40 -30",
+	      "71" = "-30 -20",
+	      "81" = "-20 -10",
+	      "91" = "-10 0",
+	      "101" = "0 +10",
+	      "111" = "+10 +20",
+	      "121" = "+20 +30",
+ 	     "131" = "+30 +40",
+	      "141" = "+40 +50")
+	    ) +
+ 	 theme_bw()
+	
+	return(p2)
+	}
+
+##############################################################################################################################################################################
 # Load feature file 1
 pssm1_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF1_AND_TFE3.ft", 
-                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_USF1",pval_thr=.0001)
+                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_USF1",pval_thr=.01)
 # Load feature file 2
 pssm2_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF1_AND_TFE3.ft", 
-                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_TFE3",pval_thr=.0001)
+                         pssm_name = "MM1_HSA_HepG2_USF1_AND_MM1_HSA_HepG2_TFE3",pval_thr=.01)
 
-pssm1_df <- pssm1_df %>% mutate( matrix_name = "USF1"  )
-pssm2_df <- pssm2_df %>% mutate( matrix_name = "USF1+TFE3" )
+pp <- plotMS(pssm1_df,pssm2_df,mat1="USF1",mat2="USF1+TFE3")
+pp
+table(databox2$matrix_name)
+##############################################################################################################################################################################
+pssm1_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HCT116_ELF1_AND_FOSL1.ft", 
+                         pssm_name = "MM1_HSA_HCT116_ELF1_AND_MM1_HSA_HCT116_ELF1",pval_thr=.01)
+# Load feature file 2
+pssm2_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HCT116_ELF1_AND_FOSL1.ft", 
+                         pssm_name = "MM1_HSA_HCT116_ELF1_AND_MM1_HSA_HCT116_FOSL1",pval_thr=.01)
+
+pp <- plotMS(pssm1_df,pssm2_df,mat1="ELF1",mat2="ELF1+FOSL1")
+pp
+table(databox2$matrix_name)
+##############################################################################################################################################################################
+pssm1_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF2_AND_TFE3.ft", 
+                         pssm_name = "MM1_HSA_HepG2_USF2_AND_MM1_HSA_HepG2_USF2",pval_thr=.01)
+# Load feature file 2
+pssm2_df <- pval_in_bins(ft_file = "/Users/wone/CSI/FPWM_walter/matrixScan_minicof/ft/matrix-scan_HepG2_USF2_AND_TFE3.ft", 
+                         pssm_name = "MM1_HSA_HepG2_USF2_AND_MM1_HSA_HepG2_TFE3",pval_thr=.01)
+
+pp <- plotMS(pssm1_df,pssm2_df,mat1="USF2",mat2="USF2+TFE3")
+pp
+table(databox2$matrix_name)
+##############################################################################################################################################################################
 
 
-databox2 <- rbind(pssm1_df,pssm2_df) %>% 
-  mutate( matrix_name =  matrix_name %>% as.factor() )
 
-p2 <- databox2 %>% 
-  ggplot(aes(x = binMap, y = pval, fill = matrix_name)) + 
-  geom_boxplot(outlier.shape = NA) + 
-  xlab("JUND and FOSL2 overlapping peaks bins") + 
-  ylab("-Log10 Pvalues") + 
-  labs(fill='Motifs') +
-  scale_x_discrete(
-    labels=c(
-      "51" = "-50 -40",
-      "61" = "-40 -30",
-      "71" = "-30 -20",
-      "81" = "-20 -10",
-      "91" = "-10 0",
-      "101" = "0 +10",
-      "111" = "+10 +20",
-      "121" = "+20 +30",
-      "131" = "+30 +40",
-      "141" = "+40 +50")
-    ) +
-  theme_bw()
+
 
 # Plot
 p2
@@ -194,11 +226,4 @@ p2
 ggsave(filename = "../img/matrix_scan_pval_JUND_and_FOSL2_peaks.pdf")
 
 # Get number of TFBSs
-databox2 %>% 
-  mutate(matrix_name = matrix_name %>% 
-           factor(levels = c("JUND+ATF2","JUND", "JUND+FOSL2")
-         )) %>% 
-  ggplot( aes(x=matrix_name, fill = matrix_name) ) +
-  geom_bar(stat="count", width=0.5)+
-  labs(fill='Motifs') +
-  theme_bw()
+table(databox2$matrix_name)
