@@ -255,3 +255,38 @@ pssm2_df <- pval_in_bins(ft_file = "matrix-scan_fosl2peaks.ft",
                          pssm_name = "MM1_HSA_HepG2_JUND_overlapped_with_MM1_HSA_HepG2_FOSL2",pval_thr=.01)
 pp <- plotMS(pssm1_df,pssm2_df,mat1="JUND",mat2="JUND+FOSL2",colors=c("#F8766D","#00BA38"))
 ggsave(filename = "JUND+FOSL2_HepG2_matrixScan_pval.pdf",height=3,width=4)
+##############################################################################################################################################################################
+##############################################################################################################################################################################
+
+xx <- read.table(pipe('grep -w "site" matrix-scan_atf4.ft |cut -f 3,9'))
+bartable_tmp <- table(xx[xx[,2]<.001,1])
+bartable <- bartable_tmp
+bartable[1] <- bartable_tmp[2]
+bartable[2] <- bartable_tmp[1]
+names(bartable) <- c("CEBPB","CEBPB+ATF4","CEBPB+CEBPD")
+
+pdf("matrix-scan_atf4peaks_barplot.pdf")
+barplot(bartable,main="CEBPB+ATF4 peaks",ylab="Number of predicted binding sites", col=c("#F8766D","#619CFF","#00BA38"),cex.axis=1.5,cex.lab=1.5,cex.names=1.5,cex.main=1.5)
+dev.off()
+
+pssm1_df <- pval_in_bins(ft_file = "matrix-scan_atf4.ft", pssm_name = "MM1_HSA_K562_CEBPB_\\[AND\\]_MM1_HSA_K562_CEBPB",pval_thr=.01)
+pssm2_df <- pval_in_bins(ft_file = "matrix-scan_atf4.ft", pssm_name = "MM1_HSA_K562_CEBPB_\\[AND\\]_MM1_HSA_K562_ATF4",pval_thr=.01)
+pp <- plotMS(pssm1_df,pssm2_df,mat1="CEBPB",mat2="CEBPB+ATF4",colors=c("#F8766D","#619CFF"))
+ggsave(filename = "CEBPB+ATF4_K562_matrixScan_pval.pdf",height=3,width=4)
+##############################################################################################################################################################################
+xx <- read.table(pipe('grep -w "site" matrix-scan_cebpd.ft |cut -f 3,9'))
+bartable_tmp <- table(xx[xx[,2]<.001,1])
+bartable <- bartable_tmp
+bartable[1] <- bartable_tmp[2]
+bartable[2] <- bartable_tmp[1]
+names(bartable) <- c("CEBPB","CEBPB+ATF4","CEBPB+CEBPD")
+
+pdf("matrix-scan_cebpdpeaks_barplot.pdf")
+barplot(bartable,main="CEBPB+CEBPD peaks",ylab="Number of predicted binding sites", col=c("#F8766D","#619CFF","#00BA38"),cex.axis=1.5,cex.lab=1.5,cex.names=1.5,cex.main=1.5)
+dev.off()
+
+pssm1_df <- pval_in_bins(ft_file = "matrix-scan_cebpd.ft", pssm_name = "MM1_HSA_K562_CEBPB_\\[AND\\]_MM1_HSA_K562_CEBPB",pval_thr=.01)
+pssm2_df <- pval_in_bins(ft_file = "matrix-scan_cebpd.ft", pssm_name = "MM1_HSA_K562_CEBPB_\\[AND\\]_MM1_HSA_K562_CEBPD",pval_thr=.01)
+pp <- plotMS(pssm1_df,pssm2_df,mat1="CEBPB",mat2="CEBPB+CEBPD",colors=c("#F8766D","#00BA38"))
+ggsave(filename = "CEBPB+CEBPD_K562_matrixScan_pval.pdf",height=3,width=4)
+
